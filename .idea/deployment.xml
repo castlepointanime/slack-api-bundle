@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" promptOnRemoteOverwrite="CHECK_CONTENT" serverName="Parent5446.us" deleteMissingItems="true" createEmptyFolders="true" exclude=".svn;.cvs;.idea;.DS_Store;.git;.hg;vendor;app/cache">
+    <serverData>
+      <paths name="Parent5446.us">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/var/www/html/slack" local="$PROJECT_DIR$" web="slack/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

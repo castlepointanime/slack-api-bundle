@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    This file is part of the Slack API Bundle, a Symfony bundle for Slack.com
+    Copyright (C) 2015  Tyler Romeo <tylerromeo@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<xsd:schema xmlns="https://schema.castlepointanime.com/dic/slack_api"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="https://schema.castlepointanime.com/dic/slack_api"
+            elementFormDefault="qualified">
+
+    <xsd:annotation>
+        <xsd:appinfo>Slack API Bundle</xsd:appinfo>
+        <xsd:documentation><![CDATA[
+            Symfony Slack API configuration schema, version 1.0
+            Authors: Tyler Romeo
+            This scheme defines the elements and attributes that can be used to define
+            the Slack API configuration.
+        ]]></xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:element name="config" type="slackconfig"/>
+
+    <xsd:complexType name="slackconfig">
+        <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="team" type="team"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="team">
+        <xsd:sequence>
+            <xsd:element name="token" type="token" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:token"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="token">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:token">
+                <xsd:attribute name="type" type="tokentype" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="tokentype">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="oauth"/>
+            <xsd:enumeration value="outgoing"/>
+            <xsd:enumeration value="incoming"/>
+            <xsd:enumeration value="slackbot"/>
+            <xsd:enumeration value="slashcommand"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

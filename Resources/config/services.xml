@@ -1,0 +1,192 @@
+<?xml version="1.0" ?>
+<!--
+    This file is part of the Slack API Bundle, a Symfony bundle for Slack.com
+    Copyright (C) 2015  Tyler Romeo <tylerromeo@gmail.com>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="slackapi.team"/>
+        <parameter key="slackapi.token.oauth"/>
+        <parameter key="slackapi.token.incoming"/>
+        <parameter key="slackapi.token.slackbot"/>
+        <parameter key="slackapi.token.outgoing" type="collection"/>
+        <parameter key="slackapi.token.slashcommand" type="collection"/>
+
+        <parameter key="slackapi.registry.class">CastlePointAnime\SlackApiBundle\SlackDispatcher</parameter>
+        <parameter key="slackapi.api.base_client.class">GuzzleHttp\Client</parameter>
+        <parameter key="slackapi.api.description.class">GuzzleHttp\Command\Guzzle\Description</parameter>
+        <parameter key="slackapi.api.class">CastlePointAnime\SlackApiBundle\Guzzle\SlackApiClient</parameter>
+        <parameter key="slackapi.controller.class">CastlePointAnime\SlackApiBundle\Controller\DefaultController</parameter>
+
+        <parameter key="slackapi.api.descriptor" type="collection">
+            <parameter key="baseUrl">https://slack.com/api/</parameter>
+            <parameter key="operations" type="collection">
+                <!--
+                <parameter key="" type="collection">
+                    <parameter key="httpMethod"></parameter>
+                    <parameter key="uri"></parameter>
+                    <parameter key="summary"></parameter>
+                    <parameter key="responseClass"></parameter>
+                </parameter>
+                -->
+
+                <parameter key="base" type="collection">
+                    <parameter key="httpMethod">POST</parameter>
+                    <parameter key="uri">auth.test</parameter>
+                    <parameter key="responseModel">GenericResponse</parameter>
+                    <parameter key="parameters" type="collection">
+                        <parameter key="token" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">query</parameter>
+                            <parameter key="default">%slackapi.token.oauth%</parameter>
+                            <parameter key="static">true</parameter>
+                        </parameter>
+                    </parameter>
+                </parameter>
+
+                <parameter key="sendBotMessage" type="collection">
+                    <parameter key="httpMethod">POST</parameter>
+                    <parameter key="uri">https://%slackapi.team%.slack.com/services/hooks/incoming-webhook</parameter>
+                    <parameter key="summary">Send messages into Slack using incoming web hooks</parameter>
+                    <parameter key="parameters" type="collection">
+                        <parameter key="token" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">query</parameter>
+                            <parameter key="default">%slackapi.token.incoming%</parameter>
+                            <parameter key="static">true</parameter>
+                        </parameter>
+                        <parameter key="text" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">json</parameter>
+                            <parameter key="required">true</parameter>
+                        </parameter>
+                        <parameter key="channel" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">json</parameter>
+                        </parameter>
+                        <parameter key="username" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">json</parameter>
+                        </parameter>
+                        <parameter key="icon_url" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">json</parameter>
+                        </parameter>
+                        <parameter key="icon_emoji" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">json</parameter>
+                        </parameter>
+                    </parameter>
+                </parameter>
+
+                <parameter key="sendSlackbotMessage" type="collection">
+                    <parameter key="httpMethod">POST</parameter>
+                    <parameter key="uri">https://%slackapi.team%.slack.com/services/hooks/slackbot</parameter>
+                    <parameter key="summary">Send messages into Slack using incoming web hooks</parameter>
+                    <parameter key="parameters" type="collection">
+                        <parameter key="token" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">query</parameter>
+                            <parameter key="default">%slackapi.token.slackbot%</parameter>
+                            <parameter key="static">true</parameter>
+                        </parameter>
+                        <parameter key="text" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">body</parameter>
+                            <parameter key="required">true</parameter>
+                        </parameter>
+                        <parameter key="channel" type="collection">
+                            <parameter key="type">string</parameter>
+                            <parameter key="location">query</parameter>
+                        </parameter>
+                    </parameter>
+                </parameter>
+            </parameter>
+            <parameter key="models" type="collection">
+                <parameter key="GenericResponse" type="collection">
+                    <parameter key="type">object</parameter>
+                    <parameter key="additionalProperties" type="collection">
+                        <parameter key="location">json</parameter>
+                    </parameter>
+                </parameter>
+                <parameter key="SlackChannel" type="collection">
+                    <parameter key="type">object</parameter>
+                    <parameter key="properties" type="collection">
+                        <parameter key="channel" type="collection">
+                            <parameter key="type">object</parameter>
+                            <parameter key="location">json</parameter>
+                        </parameter>
+                    </parameter>
+                </parameter>
+                <parameter key="SlackGroup" type="collection">
+                    <parameter key="type">object</parameter>
+                    <parameter key="properties" type="collection">
+                        <parameter key="group" type="collection">
+                            <parameter key="type">object</parameter>
+                            <parameter key="location">json</parameter>
+                        </parameter>
+                    </parameter>
+                </parameter>
+                <parameter key="SlackUser" type="collection">
+                    <parameter key="type">object</parameter>
+                    <parameter key="properties" type="collection">
+                        <parameter key="user" type="collection">
+                            <parameter key="type">object</parameter>
+                            <parameter key="location">json</parameter>
+                        </parameter>
+                    </parameter>
+                </parameter>
+                <parameter key="SlackFile" type="collection">
+                    <parameter key="type">object</parameter>
+                    <parameter key="properties" type="collection">
+                        <parameter key="file" type="collection">
+                            <parameter key="type">object</parameter>
+                            <parameter key="location">json</parameter>
+                        </parameter>
+                    </parameter>
+                </parameter>
+            </parameter>
+        </parameter>
+    </parameters>
+
+    <services>
+        <service id="slackapi.api.base_client" class="%slackapi.api.base_client.class%"/>
+        <service id="slackapi.api.description" class="%slackapi.api.description.class%">
+            <argument>%slackapi.api.descriptor%</argument>
+        </service>
+        <service id="slackapi.api.subscriber"
+                 class="CastlePointAnime\SlackApiBundle\Guzzle\SlackApiSubscriber"/>
+
+        <service id="slackapi.api" class="%slackapi.api.class%">
+            <argument type="service" id="slackapi.api.base_client"/>
+            <argument type="service" id="slackapi.api.description"/>
+            <configurator service="slackapi.api.subscriber" method="subscribe"/>
+        </service>
+        <service id="slackapi.registry" class="%slackapi.registry.class%">
+            <argument type="service" id="logger" />
+        </service>
+
+        <service id="slackapi.controller" class="%slackapi.controller.class%">
+            <argument type="service" id="slackapi.registry" />
+            <argument>%slackapi.token.outgoing%</argument>
+            <argument>%slackapi.token.slashcommand%</argument>
+            <argument type="service" id="logger" />
+        </service>
+    </services>
+</container>
