@@ -4,7 +4,7 @@
     "type": "project",
     "description": "",
     "autoload": {
-        "psr-4": { "CastlePointAnime\\SlackApiBundle": "." }
+        "psr-4": { "CastlePointAnime\\SlackApiBundle\\": "" }
     },
     "require": {
         "php": ">=5.3.3",

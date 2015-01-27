@@ -18,22 +18,39 @@
  */
 
 
-namespace CastlePointAnime\SlackApiBundle;
+namespace CastlePointAnime\SlackApiBundle\Event;
 
-use CastlePointAnime\SlackApiBundle\Event\HookResponseEvent;
+use CastlePointAnime\SlackApiBundle\ModuleDescriptorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Event dispatcher for managing Slack API modules and sending events
+ * to those modules when applicable
+ *
+ * @package CastlePointAnime\SlackApiBundle\Event
+ */
 class SlackDispatcher extends EventDispatcher
 {
     private $logger;
 
+    /**
+     * @param LoggerInterface $logger
+     */
     public function __construct( LoggerInterface $logger )
     {
         $this->logger = $logger;
     }
 
+    /**
+     * Register a module with the dispatcher
+     *
+     * Use information from the module descriptor to subscribe the module
+     * to the appropriate event names that will be used to send out events.
+     *
+     * @param ModuleDescriptorInterface $module Descriptor for the module
+     * @param int $priority Priority to be passed to EventDispatcher
+     */
     public function register( ModuleDescriptorInterface $module, $priority = 0 )
     {
         $this->logger->debug( 'Loading module in Slack registry.', [ 'module' => $module, 'priority' => $priority ] );
@@ -57,10 +74,17 @@ class SlackDispatcher extends EventDispatcher
         }
     }
 
+    /**
+     * Dispatch a response from the Slack API
+     *
+     * Using a provided event triggered by a Slack request, check the
+     * information in the request and send out events to the appropriate
+     * dispatcher channels.
+     *
+     * @param HookResponseEvent $event
+     */
     public function dispatchResponse( HookResponseEvent $event )
     {
-        $event->response = new Response();
-
         $this->logger->debug( 'Dispatching Slack event.', [ 'event' => $event ] );
 
         if ($event->slashCommand) {
@@ -71,7 +95,5 @@ class SlackDispatcher extends EventDispatcher
             $this->dispatch( "slackapi.channel.{$event->channelName}", $event );
             $this->dispatch( "slackapi.channel.{$event->channelId}", $event );
         }
-
-        return $event->response;
     }
 }

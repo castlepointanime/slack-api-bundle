@@ -23,12 +23,17 @@ use CastlePointAnime\SlackApiBundle\Controller\DefaultController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Tests\Logger;
 
+/**
+ * Tests related to the controller that handles Slack requests
+ *
+ * @package CastlePointAnime\SlackApiBundle\Tests\Controller
+ */
 class DefaultControllerTest extends \PHPUnit_Framework_TestCase
 {
     public function testIndex()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\CastlePointAnime\SlackApiBundle\SlackDispatcher $mockDispatcher */
-        $mockDispatcher = $this->getMockBuilder( '\CastlePointAnime\SlackApiBundle\SlackDispatcher' )
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\CastlePointAnime\SlackApiBundle\Event\SlackDispatcher $mockDispatcher */
+        $mockDispatcher = $this->getMockBuilder( '\CastlePointAnime\SlackApiBundle\Event\SlackDispatcher' )
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -38,7 +43,51 @@ class DefaultControllerTest extends \PHPUnit_Framework_TestCase
             ->with( $this->isInstanceOf( '\CastlePointAnime\SlackApiBundle\Event\HookResponseEvent' ) );
 
         $controller = new DefaultController( $mockDispatcher, [ 'myoutgoingtoken' ], [ 'myslashtoken' ], new Logger() );
-        $request = new Request( [], [], [], [], [], [], 'token=myoutgoingtoken' );
+        $request = new Request( [], [ 'token' => 'myoutgoingtoken' ] );
+        /** @var \Symfony\Component\HttpFoundation\Response $response */
+        $response = $controller( $request );
+
+        $this->assertEquals( 200, $response->getStatusCode() );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     */
+    public function testInvalidToken()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\CastlePointAnime\SlackApiBundle\Event\SlackDispatcher $mockDispatcher */
+        $mockDispatcher = $this->getMockBuilder( '\CastlePointAnime\SlackApiBundle\Event\SlackDispatcher' )
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockDispatcher
+            ->expects( $this->never() )
+            ->method( 'dispatchResponse' );
+
+        $controller = new DefaultController( $mockDispatcher, [ 'myoutgoingtoken' ], [ 'myslashtoken' ], new Logger() );
+        $request = new Request( [], [ 'token' => 'invalidtoken' ] );
+        /** @var \Symfony\Component\HttpFoundation\Response $response */
+        $response = $controller( $request );
+
+        $this->assertEquals( 200, $response->getStatusCode() );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     */
+    public function testInvalidRequest()
+    {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|\CastlePointAnime\SlackApiBundle\Event\SlackDispatcher $mockDispatcher */
+        $mockDispatcher = $this->getMockBuilder( '\CastlePointAnime\SlackApiBundle\Event\SlackDispatcher' )
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockDispatcher
+            ->expects( $this->never() )
+            ->method( 'dispatchResponse' );
+
+        $controller = new DefaultController( $mockDispatcher, [ 'myoutgoingtoken' ], [ 'myslashtoken' ], new Logger() );
+        $request = new Request( [], [ 'fdfgdg' => 'dfgdfgdfg' ] );
         /** @var \Symfony\Component\HttpFoundation\Response $response */
         $response = $controller( $request );
 

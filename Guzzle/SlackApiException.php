@@ -22,6 +22,15 @@ namespace CastlePointAnime\SlackApiBundle\Guzzle;
 
 use GuzzleHttp\Command\Exception\CommandException;
 
+/**
+ * Exception thrown when the API returns a non-ok response
+ *
+ * This can be thrown when either the response received from
+ * the API is invalid, or when Slack returns and sets "ok" to
+ * false, indicating some failure in the requested operation.
+ *
+ * @package CastlePointAnime\SlackApiBundle\Guzzle
+ */
 class SlackApiException extends CommandException
 {
 }

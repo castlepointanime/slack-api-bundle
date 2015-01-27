@@ -1,0 +1,24 @@
+language: php
+
+php:
+  - 5.5
+  - 5.4
+  - hhvm
+
+env:
+- SYMFONY_VERSION=2.0.*
+- SYMFONY_VERSION=2.1.*
+- SYMFONY_VERSION=2.2.*
+- SYMFONY_VERSION=2.3.*
+- SYMFONY_VERSION=2.4.*
+- SYMFONY_VERSION=2.5.*
+- SYMFONY_VERSION=2.6.*
+- SYMFONY_VERSION=dev-master
+
+before_script:
+- composer require symfony/event-dispatcher:${SYMFONY_VERSION}
+- composer require symfony/config:${SYMFONY_VERSION}
+- composer require symfony/dependency-injection:${SYMFONY_VERSION}
+- composer require ymfony/http-foundation:${SYMFONY_VERSION}
+
+script: phpunit --coverage-text

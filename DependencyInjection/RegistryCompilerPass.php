@@ -24,8 +24,20 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Compiler pass that finds tagged Slack modules and adds
+ * them to the dispatcher.
+ *
+ * @package CastlePointAnime\SlackApiBundle\DependencyInjection
+ */
 class RegistryCompilerPass implements CompilerPassInterface
 {
+    /**
+     * Finds all services tagged with slackapi.module and registers them with
+     * the dispatcher.
+     *
+     * @param ContainerBuilder $container
+     */
     public function process( ContainerBuilder $container )
     {
         if (!$container->hasDefinition( 'slackapi.registry' )) {

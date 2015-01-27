@@ -67,8 +67,8 @@ quick steps:
     namespace AppBundle;
 
     use CastlePointAnime\SlackApiBundle\Event\HookResponseEvent;
+    use CastlePointAnime\SlackApiBundle\Event\SlackDispatcher;
     use CastlePointAnime\SlackApiBundle\ModuleDescriptorService;
-    use CastlePointAnime\SlackApiBundle\SlackDispatcher;
 
     class MyApiService extends ModuleDescriptorService {
         public function handle( HookResponseEvent $event, $eventName, SlackDispatcher $dispatcher )

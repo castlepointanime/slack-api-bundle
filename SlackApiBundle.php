@@ -23,8 +23,16 @@ use CastlePointAnime\SlackApiBundle\DependencyInjection\RegistryCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Bundle for interacting with the Slack API
+ *
+ * @package CastlePointAnime\SlackApiBundle
+ */
 class SlackApiBundle extends Bundle
 {
+    /**
+     * @inheritdoc
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);

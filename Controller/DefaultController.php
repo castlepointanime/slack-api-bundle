@@ -20,15 +20,20 @@
 namespace CastlePointAnime\SlackApiBundle\Controller;
 
 use CastlePointAnime\SlackApiBundle\Event\HookResponseEvent;
-use CastlePointAnime\SlackApiBundle\SlackDispatcher;
+use CastlePointAnime\SlackApiBundle\Event\SlackDispatcher;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * Default controller for handling requests send in from Slack
+ *
+ * @package CastlePointAnime\SlackApiBundle\Controller
+ */
 class DefaultController
 {
-    /** @var \CastlePointAnime\SlackApiBundle\SlackDispatcher */
+    /** @var \CastlePointAnime\SlackApiBundle\Event\SlackDispatcher */
     private $dispatcher;
 
     private $outgoingTokens;
@@ -37,6 +42,12 @@ class DefaultController
 
     private $logger;
 
+    /**
+     * @param SlackDispatcher $dispatcher
+     * @param array $outgoingTokens
+     * @param array $slashTokens
+     * @param LoggerInterface $logger
+     */
     public function __construct( SlackDispatcher $dispatcher, array $outgoingTokens, array $slashTokens, LoggerInterface $logger )
     {
         $this->dispatcher = $dispatcher;
@@ -63,6 +74,7 @@ class DefaultController
         $event->text = $request->request->get( 'text' );
         $event->triggerWord = $request->request->get( 'trigger_word' );
         $event->slashCommand = $request->request->get( 'command' );
+        $event->response = new Response();
 
         $token = $request->request->get( 'token' );
 
@@ -77,6 +89,8 @@ class DefaultController
             throw new AccessDeniedException();
         }
 
-        return $this->dispatcher->dispatchResponse( $event );
+        $this->dispatcher->dispatchResponse( $event );
+
+        return $event->response;
     }
 }

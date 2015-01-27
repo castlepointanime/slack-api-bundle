@@ -24,6 +24,16 @@ use GuzzleHttp\Command\Event\ProcessEvent;
 use GuzzleHttp\Event\HasEmitterInterface;
 use GuzzleHttp\Event\SubscriberInterface;
 
+/**
+ * Guzzle subscriber for checking whether the request was OK
+ *
+ * Subscribes to the Guzzle services dispatcher and checks
+ * various parts of the request. Note that this does not
+ * listen on the actual Guzzle dispatcher. It only receives
+ * events from the guzzle-services dispatcher.
+ *
+ * @package CastlePointAnime\SlackApiBundle\Guzzle
+ */
 class SlackApiSubscriber implements SubscriberInterface
 {
     /**

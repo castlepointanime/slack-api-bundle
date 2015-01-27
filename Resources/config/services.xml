@@ -28,7 +28,7 @@
         <parameter key="slackapi.token.outgoing" type="collection"/>
         <parameter key="slackapi.token.slashcommand" type="collection"/>
 
-        <parameter key="slackapi.registry.class">CastlePointAnime\SlackApiBundle\SlackDispatcher</parameter>
+        <parameter key="slackapi.registry.class">CastlePointAnime\SlackApiBundle\Event\SlackDispatcher</parameter>
         <parameter key="slackapi.api.base_client.class">GuzzleHttp\Client</parameter>
         <parameter key="slackapi.api.description.class">GuzzleHttp\Command\Guzzle\Description</parameter>
         <parameter key="slackapi.api.class">CastlePointAnime\SlackApiBundle\Guzzle\SlackApiClient</parameter>

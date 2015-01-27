@@ -19,13 +19,48 @@
 
 namespace CastlePointAnime\SlackApiBundle;
 
+/**
+ * Interface for describing a Slack API modules
+ *
+ * @package CastlePointAnime\SlackApiBundle
+ */
 interface ModuleDescriptorInterface
 {
+    /**
+     * Get a channel that the module would like
+     * to listen for all messages on
+     *
+     * @return string
+     */
     public function getChannel();
 
+    /**
+     * Get a slash command the module would like
+     * to react to
+     *
+     * @return string
+     */
     public function getSlashCommand();
 
+    /**
+     * Get a trigger words that the module would like
+     * to listen for on all channels
+     *
+     * @return string
+     */
     public function getTriggerWord();
 
+    /**
+     * Get the function that will be called when an
+     * event is applicable
+     *
+     * The callback will be called with three arguments:
+     * the HookResponseEvent event that was triggered, the
+     * string name of the channel that was triggered, and
+     * the dispatcher object. See Symfony's EventDispatcher
+     * documentation for more details.
+     *
+     * @return callable
+     */
     public function getCallback();
 }

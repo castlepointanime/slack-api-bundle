@@ -31,11 +31,17 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class SlackApiExtension extends Extension
 {
+    /**
+     * @inheritdoc
+     */
     public function getNamespace()
     {
         return 'https://schema.castlepointanime.com/dic/slack_api';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getXsdValidationBasePath()
     {
         return __DIR__ . '/../Resources/config/schema';

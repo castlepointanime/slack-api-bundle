@@ -20,7 +20,16 @@
 namespace CastlePointAnime\SlackApiBundle;
 
 use CastlePointAnime\SlackApiBundle\Event\HookResponseEvent;
+use CastlePointAnime\SlackApiBundle\Event\SlackDispatcher;
 
+/**
+ * A convenience implementation of ModuleDescriptorInterface
+ *
+ * Simple class with public attributes and getters for the various
+ * parts of the module. Useful for using as a Symfony service.
+ *
+ * @package CastlePointAnime\SlackApiBundle
+ */
 abstract class ModuleDescriptorService implements ModuleDescriptorInterface
 {
     public $channel;
@@ -44,10 +53,28 @@ abstract class ModuleDescriptorService implements ModuleDescriptorInterface
         return $this->triggerWord;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getCallback()
     {
         return [ $this, 'handle' ];
     }
 
+    /**
+     * Handle a Slack hook event
+     *
+     * To be implemented by developers. The code can read information
+     * from the event, send messages into the Slack API, etc. If the
+     * you want to send information back to Slack in response to the
+     * original request (Slack will sometimes relay this information
+     * to the user as a private message), just modify the $event->response.
+     *
+     * @param HookResponseEvent $event Event describing the information received from Slack
+     * @param $eventName String representing the triggered channel
+     * @param SlackDispatcher $dispatcher The SlackDispatcher object
+     *
+     * @return mixed
+     */
     abstract public function handle( HookResponseEvent $event, $eventName, SlackDispatcher $dispatcher );
 }

@@ -18,34 +18,25 @@
  */
 
 
-namespace CastlePointAnime\SlackApiBundle\Event;
+namespace CastlePointAnime\SlackApiBundle\Tests;
 
-use Symfony\Component\EventDispatcher\Event;
+
+use CastlePointAnime\SlackApiBundle\Event\HookResponseEvent;
+use CastlePointAnime\SlackApiBundle\Event\SlackDispatcher;
+use CastlePointAnime\SlackApiBundle\ModuleDescriptorService;
 
 /**
- * An event that represents a request sent in from Slack
+ * Test implementation of a ModuleDescriptorService that has
+ * an empty handle method
  *
- * @package CastlePointAnime\SlackApiBundle\Event
+ * @package CastlePointAnime\SlackApiBundle\Tests
  */
-class HookResponseEvent extends Event
+class TestModuleDescriptorService extends ModuleDescriptorService
 {
-    public $team;
-
-    public $channelId;
-
-    public $channelName;
-
-    public $timestamp;
-
-    public $userId;
-
-    public $userName;
-
-    public $text;
-
-    public $triggerWord;
-
-    public $slashCommand;
-
-    public $response;
+    /**
+     * @inheritdoc
+     */
+    public function handle( HookResponseEvent $event, $eventName, SlackDispatcher $dispatcher )
+    {
+    }
 }
