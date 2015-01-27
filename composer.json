@@ -1,8 +1,24 @@
 {
     "name": "castlepointanime/slack-api-bundle",
+    "type": "library",
+    "description": "Symfony bundle for interacting with the Slack API",
+    "keywords": ["symfony", "slack"],
     "license": "AGPL-3.0",
-    "type": "project",
-    "description": "",
+    "homepage": "https://github.com/castlepointanime/slack-api-bundle",
+    "authors": [
+        {
+            "name": "Tyler Romeo",
+            "email": "tylerromeo@gmail.com",
+            "homepage": "https://parent5446.nyc",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "tylerromeo@gmail.com",
+        "issues": "https://github.com/castlepointanime/slack-api-bundle/issues",
+        "source": "https://github.com/castlepointanime/slack-api-bundle"
+    },
+
     "autoload": {
         "psr-4": { "CastlePointAnime\\SlackApiBundle\\": "" }
     },
