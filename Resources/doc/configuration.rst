@@ -39,6 +39,9 @@ feature.
 Example Configuration
 ---------------------
 
+1. Add the configuration.
+2. Add the routes
+
 YAML
 ~~~~
 
@@ -53,6 +56,13 @@ YAML
             slackbot: "%my_slackbot_token%"
             outgoing: "%my_outgoing_token%"
             slashcommand: "%my_slashcommand_token%"
+
+.. code:: yaml
+
+    ; app/config
+    slack_api:
+        resource: "@SlackApiBundle/Resources/config/routing.xml"
+        prefix:   /
 
 XML
 ~~~
@@ -72,4 +82,14 @@ XML
             <token type="slashcommand">%my_slashcommand_token%</token>
         </team>
     </config>
+
+.. code:: xml
+
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <routes xmlns="http://symfony.com/schema/routing"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+        <import resource="@SlackApiBundle/Resources/config/routing.xml" prefix="/" />
+    </routes>
+
 
