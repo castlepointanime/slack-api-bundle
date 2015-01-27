@@ -1,6 +1,9 @@
 Slack API Bundle
 ================
 
+.. image:: https://travis-ci.org/castlepointanime/slack-api-bundle.svg?branch=master
+    :target: https://travis-ci.org/castlepointanime/slack-api-bundle
+
 This project is a `Symfony bundle <http://symfony.com/>`__ for
 interacting with the `Slack.com API <https://api.slack.com/>`__. The
 purpose is to provide an easy framework for writing bots and other tools
