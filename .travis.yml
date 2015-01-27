@@ -15,10 +15,9 @@ env:
 - SYMFONY_VERSION=2.6.*
 - SYMFONY_VERSION=dev-master
 
-before_script:
-- composer require symfony/event-dispatcher:${SYMFONY_VERSION}
-- composer require symfony/config:${SYMFONY_VERSION}
-- composer require symfony/dependency-injection:${SYMFONY_VERSION}
-- composer require ymfony/http-foundation:${SYMFONY_VERSION}
+before_script: composer require symfony/event-dispatcher:${SYMFONY_VERSION} \
+                                symfony/config:${SYMFONY_VERSION} \
+                                symfony/dependency-injection:${SYMFONY_VERSION} \
+                                symfony/http-foundation:${SYMFONY_VERSION}
 
 script: phpunit --coverage-text
