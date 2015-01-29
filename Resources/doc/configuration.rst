@@ -51,11 +51,11 @@ YAML
     slack_api:
         name: "%my_team_name%"
         tokens:
-            oauth: "%my_oauth_token%"
-            incoming: "%my_incoming_token%"
-            slackbot: "%my_slackbot_token%"
-            outgoing: "%my_outgoing_token%"
-            slashcommand: "%my_slashcommand_token%"
+            - { type: oauth, value: "%my_oauth_token%" }
+            - { type: incoming, value: "%my_incoming_token%" }
+            - { type: slackbot, value: "%my_slackbot_token%" }
+            - { type: outgoing, value: "%my_outgoing_token%" }
+            - { type: slashcommand, value: "%my_slashcommand_token%" }
 
 .. code:: yaml
 

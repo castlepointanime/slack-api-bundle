@@ -63,8 +63,8 @@ class SlackApiExtension extends Extension
         // Set config as parameters
         $outgoingTokens = [ ];
         $slashcommandTokens = [ ];
-        foreach ($config[ 'tokens' ] as $type => $token) {
-            switch ($type) {
+        foreach ($config[ 'tokens' ] as $token) {
+            switch ($token['type']) {
                 case 'oauth':
                     $container->setParameter( 'slackapi.token.oauth', $token[ 'value' ] );
                     break;

@@ -46,17 +46,12 @@ class Configuration implements ConfigurationInterface
                         ->info( 'The readable name of the team, not the team ID' )
                     ->end()
                     ->arrayNode( 'tokens' )
-                        ->useAttributeAsKey( 'type' )
                         ->prototype( 'array' )
-                            ->beforeNormalization()
-                                ->ifString()
-                                ->then(
-                                    function ( $v ) {
-                                        return [ 'value' => $v ];
-                                    }
-                                )
-                            ->end()
                             ->children()
+                                ->enumNode( 'type' )
+                                    ->values( ['oauth', 'outgoing', 'incoming', 'slackbot', 'slashcommand'] )
+                                    ->cannotBeEmpty()
+                                ->end()
                                 ->scalarNode( 'value' )
                                     ->isRequired()
                                     ->cannotBeEmpty()
