@@ -66,11 +66,17 @@ class SlackDispatcher extends EventDispatcher
             $this->addListener( "slackapi.trigger.$trigger", $module->getCallback(), $priority );
         }
         if (( $channel = $module->getChannel() )) {
-            // Slack webhook does not include # in channel name, so remove if user has it
-            if ( $channel[0] === '#' ) {
-                $channel = substr( $channel, 1 );
+            if ( $channel === true ) {
+                // Listen on all channels
+                $this->addListener( "slackapi.channel", $module->getCallback(), $priority );
             }
-            $this->addListener( "slackapi.channel.$channel", $module->getCallback(), $priority );
+            foreach ( (array)$channel as $name ) {
+                // Slack webhook does not include # in channel name, so remove if user has it
+                if ($name[ 0 ] === '#') {
+                    $name = substr( $name, 1 );
+                }
+                $this->addListener( "slackapi.channel.$name", $module->getCallback(), $priority );
+            }
         }
     }
 
@@ -89,9 +95,11 @@ class SlackDispatcher extends EventDispatcher
 
         if ($event->slashCommand) {
             $this->dispatch( "slackapi.command.{$event->slashCommand}", $event );
-        } elseif ($event->triggerWord) {
-            $this->dispatch( "slackapi.trigger.{$event->triggerWord}", $event );
         } else {
+            if ($event->triggerWord) {
+                $this->dispatch( "slackapi.trigger.{$event->triggerWord}", $event );
+            }
+            $this->dispatch( "slackapi.channel", $event );
             $this->dispatch( "slackapi.channel.{$event->channelName}", $event );
             $this->dispatch( "slackapi.channel.{$event->channelId}", $event );
         }

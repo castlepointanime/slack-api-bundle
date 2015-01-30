@@ -137,4 +137,13 @@ class SlackDispatcherTest extends \PHPUnit_Framework_TestCase
         $event = new HookResponseEvent();
         $dispatcher->dispatchResponse( $event );
     }
+
+    public function testAllChannels() {
+        $dispatcher = new SlackDispatcher( new Logger() );
+        $dispatcher->register( $this->getMockDescriptor( true ) );
+
+        $event = new HookResponseEvent();
+        $event->channelName = "rlskfjldjfl";
+        $dispatcher->dispatchResponse( $event );
+    }
 }
